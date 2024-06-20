@@ -23,23 +23,39 @@ function searchDestination() {
             var searchType = data.temples;
         }
         
-        const countrySearch = data.countries.filter(item => item.name.toLowerCase().includes(input));
-        const citySearch = data.countries.map(element => element.cities).filter(item => item.name.toLowerCase().includes(input))
+        const countrySearch = data.countries.filter(item => item.name.toLowerCase().includes(input.toLowerCase()));
 
-        if (searchType) {
+        const citySearch = [];
+        data.countries.forEach(element => {
+            element.cities.filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
+            .forEach(e => {
+                citySearch.push(e);
+            });
+            
+        });
+        //const citySearch = data.countries.map(element => element.cities).filter(item => item.name.toLowerCase().includes(input))
+
+        if (searchType && searchType.length>0) {
             searchType.forEach(element => {
                 resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
                 resultDiv.innerHTML += `<h2>${element.name}</h2>`;
                 resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
             });
 
-        } else if(countrySearch){
-            countrySearch.map(element => element.cities).forEach(element => {
+        } else if(countrySearch && countrySearch.length>0){
+            countrySearch.forEach(element => element.cities.forEach(item => {
+                resultDiv.innerHTML += `<img src="${item.imageUrl}" alt="hjh">`;
+                resultDiv.innerHTML += `<h2>${item.name}</h2>`;
+                resultDiv.innerHTML += `<p><strong>${item.description}</strong> </p>`;
+            }));
+        } else if(citySearch && citySearch.length>0){
+            citySearch.forEach(element => {
                 resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
                 resultDiv.innerHTML += `<h2>${element.name}</h2>`;
                 resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
             });
-        }  else {
+        }
+		 else {
           resultDiv.innerHTML = 'Destination not found.';
         }
       })
