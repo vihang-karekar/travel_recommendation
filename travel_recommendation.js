@@ -16,21 +16,31 @@ function searchDestination() {
     fetch('travel_recommendation_api.json')
       .then(response => response.json())
       .then(data => {
-        const condition = data.find(item => item.toLowerCase().includes(input));
+        debugger;
+        if("beaches".indexOf(input.toLowerCase()) !== -1){
+            var searchType = data.beaches;
+        } else if ("temples".indexOf(input.toLowerCase()) !== -1) {
+            var searchType = data.temples;
+        }
+        
+        const countrySearch = data.countries.filter(item => item.name.toLowerCase().includes(input));
+        const citySearch = data.countries.map(element => element.cities).filter(item => item.name.toLowerCase().includes(input))
 
-        if (condition) {
-          const symptoms = condition.symptoms.join(', ');
-          const prevention = condition.prevention.join(', ');
-          const treatment = condition.treatment;
+        if (searchType) {
+            searchType.forEach(element => {
+                resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
+                resultDiv.innerHTML += `<h2>${element.name}</h2>`;
+                resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
+            });
 
-          resultDiv.innerHTML += `<h2>${condition.name}</h2>`;
-          resultDiv.innerHTML += `<img src="${condition.imagesrc}" alt="hjh">`;
-
-          resultDiv.innerHTML += `<p><strong>Symptoms:</strong> ${symptoms}</p>`;
-          resultDiv.innerHTML += `<p><strong>Prevention:</strong> ${prevention}</p>`;
-          resultDiv.innerHTML += `<p><strong>Treatment:</strong> ${treatment}</p>`;
-        } else {
-          resultDiv.innerHTML = 'Condition not found.';
+        } else if(countrySearch){
+            countrySearch.map(element => element.cities).forEach(element => {
+                resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
+                resultDiv.innerHTML += `<h2>${element.name}</h2>`;
+                resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
+            });
+        }  else {
+          resultDiv.innerHTML = 'Destination not found.';
         }
       })
       .catch(error => {
