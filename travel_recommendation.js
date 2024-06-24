@@ -12,6 +12,7 @@ function searchDestination() {
     const input = document.getElementById('destinationInput').value.toLowerCase();
     const resultDiv = document.getElementById('result');
     resultDiv.innerHTML = '';
+        
 
     fetch('travel_recommendation_api.json')
       .then(response => response.json())
@@ -33,26 +34,20 @@ function searchDestination() {
             });
             
         });
-        //const citySearch = data.countries.map(element => element.cities).filter(item => item.name.toLowerCase().includes(input))
-
+        
         if (searchType && searchType.length>0) {
             searchType.forEach(element => {
-                resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
-                resultDiv.innerHTML += `<h2>${element.name}</h2>`;
-                resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
+                resultDiv.innerHTML += `<div class="card-holder-2"><img src="${element.imageUrl}" alt="hjh"><h2>${element.name}</h2><p><strong>${element.description}</strong> </p><button id="visit">Visit</button></div>`;
+                
             });
-
         } else if(countrySearch && countrySearch.length>0){
             countrySearch.forEach(element => element.cities.forEach(item => {
-                resultDiv.innerHTML += `<img src="${item.imageUrl}" alt="hjh">`;
-                resultDiv.innerHTML += `<h2>${item.name}</h2>`;
-                resultDiv.innerHTML += `<p><strong>${item.description}</strong> </p>`;
+                resultDiv.innerHTML += `<div class="card-holder-2"><img src="${item.imageUrl}" alt="hjh"><h2>${item.name}</h2><p><strong>${item.description}</strong> </p><button id="visit">Visit</button></div>`;
+                
             }));
         } else if(citySearch && citySearch.length>0){
             citySearch.forEach(element => {
-                resultDiv.innerHTML += `<img src="${element.imageUrl}" alt="hjh">`;
-                resultDiv.innerHTML += `<h2>${element.name}</h2>`;
-                resultDiv.innerHTML += `<p><strong>${element.description}</strong> </p>`;
+                resultDiv.innerHTML += `<div class="card-holder-2"><img src="${element.imageUrl}" alt="hjh"><h2>${element.name}</h2><p><strong>${element.description}</strong> </p><button id="visit">Visit</button></div>`;
             });
         }
 		 else {
